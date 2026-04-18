@@ -73,7 +73,7 @@ def test_fetch_ohlcv_calls_yfinance(mock_ticker_cls):
     mock_ticker.history.return_value = make_sample_ohlcv()
     mock_ticker_cls.return_value = mock_ticker
 
-    result = fetch_ohlcv("NVDA", "NASDAQ", start="2024-01-10", end="2024-01-20")
+    result = fetch_ohlcv("NVDA", "NASDAQ", start="2024-01-10", end="2024-01-20", use_cache=False)
     assert result is not None
     assert len(result) > 0
     mock_ticker.history.assert_called_once()
