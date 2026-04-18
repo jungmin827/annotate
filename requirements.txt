@@ -1,0 +1,11 @@
+yfinance>=0.2.51
+ta>=0.11.0
+anthropic>=0.40.0
+streamlit>=1.41.0
+plotly>=5.24.1
+pandas>=2.2.0
+requests>=2.32.0
+PyYAML>=6.0.0
+pytest>=8.3.0
+pytest-mock>=3.14.0
+python-dotenv>=1.0.0

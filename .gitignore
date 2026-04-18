@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.env
+market_cache/
+news_cache/
+reports/
+*.db
+.DS_Store

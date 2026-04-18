@@ -1,0 +1,34 @@
+{
+  "trades": [
+    {
+      "id": "trade_001",
+      "ticker": "005930",
+      "name": "삼성전자",
+      "market": "KRX",
+      "action": "buy",
+      "price": 72000,
+      "quantity": 10,
+      "date": "2025-04-10",
+      "time": "10:23",
+      "reason": "AI 반도체 수요 증가, HBM 수혜 기대. 외국인 순매수 5일 연속 지속.",
+      "status": "holding",
+      "linked_sell_id": null,
+      "linked_buy_id": null
+    },
+    {
+      "id": "trade_002",
+      "ticker": "NVDA",
+      "name": "NVIDIA",
+      "market": "NASDAQ",
+      "action": "buy",
+      "price": 875.50,
+      "quantity": 5,
+      "date": "2025-03-15",
+      "time": "14:30",
+      "reason": "실적 발표 앞두고 AI 관련주 상승 모멘텀. RSI 60 수준.",
+      "status": "holding",
+      "linked_sell_id": null,
+      "linked_buy_id": null
+    }
+  ]
+}
