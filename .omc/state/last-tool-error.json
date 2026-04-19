@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"cd /Users/parkjungmin/annotate/go && go test ./internal/market/ -v 2>&1\",\"description\":\"Run market package tests including indicators\"}",
+  "error": "Exit code 1\n=== RUN   TestNormalizeTicker\n--- PASS: TestNormalizeTicker (0.00s)\n=== RUN   TestFetchOHLCV\n--- PASS: TestFetchOHLCV (0.00s)\n=== RUN   TestCalculateIndicators_Columns\n    indicators_test.go:25: RSI14 is NaN on last row\n--- FAIL: TestCalculateIndicators_Columns (0.00s)\n=== RUN   TestCalculateIndicators_RSIRange\n--- PASS: TestCalculateIndicators_RSIRange (0.00s)\n=== RUN   TestSummarizeOnDate\n--- PASS: TestSummarizeOnDate (0.00s)\nFAIL\nFAIL\tannotate/internal/market\t0.792s\nFAIL",
+  "timestamp": "2026-04-19T11:18:03.256Z",
+  "retry_count": 1
+}

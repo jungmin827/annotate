@@ -1,0 +1,288 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1776544425735,
+  "projectRoot": "/Users/parkjungmin/annotate",
+  "techStack": {
+    "languages": [],
+    "frameworks": [],
+    "packageManager": null,
+    "runtime": null
+  },
+  "build": {
+    "buildCommand": null,
+    "testCommand": null,
+    "lintCommand": null,
+    "devCommand": null,
+    "scripts": {}
+  },
+  "conventions": {
+    "namingStyle": null,
+    "importStyle": null,
+    "testPattern": null,
+    "fileOrganization": null
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [
+      "docs"
+    ],
+    "gitBranches": {
+      "defaultBranch": "main",
+      "branchingStrategy": null
+    }
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "docs": {
+      "path": "docs",
+      "purpose": "Documentation",
+      "fileCount": 6,
+      "lastAccessed": 1776544425700,
+      "keyFiles": [
+        "CONCEPT.md",
+        "DATA_CONTRACT.md",
+        "README.md",
+        "ROADMAP.md",
+        "SKILL.md"
+      ]
+    }
+  },
+  "hotPaths": [
+    {
+      "path": "docs/superpowers/plans/2026-04-19-phase2a-go-backend.md",
+      "accessCount": 9,
+      "lastAccessed": 1776547388127,
+      "type": "file"
+    },
+    {
+      "path": "go/internal/market/indicators_test.go",
+      "accessCount": 4,
+      "lastAccessed": 1776597510913,
+      "type": "file"
+    },
+    {
+      "path": "requirements.txt",
+      "accessCount": 3,
+      "lastAccessed": 1776545247728,
+      "type": "file"
+    },
+    {
+      "path": "tests/test_fetch_market.py",
+      "accessCount": 2,
+      "lastAccessed": 1776546463813,
+      "type": "file"
+    },
+    {
+      "path": "CLAUDE.md",
+      "accessCount": 2,
+      "lastAccessed": 1776546942077,
+      "type": "file"
+    },
+    {
+      "path": "README.md",
+      "accessCount": 1,
+      "lastAccessed": 1776544617854,
+      "type": "file"
+    },
+    {
+      "path": "docs/CONCEPT.md",
+      "accessCount": 1,
+      "lastAccessed": 1776544619673,
+      "type": "file"
+    },
+    {
+      "path": "docs/ROADMAP.md",
+      "accessCount": 1,
+      "lastAccessed": 1776544620050,
+      "type": "file"
+    },
+    {
+      "path": "docs/DATA_CONTRACT.md",
+      "accessCount": 1,
+      "lastAccessed": 1776544620166,
+      "type": "file"
+    },
+    {
+      "path": "docs/TRADE_SCHEMA.md",
+      "accessCount": 1,
+      "lastAccessed": 1776544620228,
+      "type": "file"
+    },
+    {
+      "path": "docs/SKILL.md",
+      "accessCount": 1,
+      "lastAccessed": 1776544624185,
+      "type": "file"
+    },
+    {
+      "path": "data/trades.json",
+      "accessCount": 1,
+      "lastAccessed": 1776545099439,
+      "type": "file"
+    },
+    {
+      "path": "config/profile.yml",
+      "accessCount": 1,
+      "lastAccessed": 1776545105222,
+      "type": "file"
+    },
+    {
+      "path": "tests/fixtures/trades_sample.json",
+      "accessCount": 1,
+      "lastAccessed": 1776545112249,
+      "type": "file"
+    },
+    {
+      "path": ".env.example",
+      "accessCount": 1,
+      "lastAccessed": 1776545116537,
+      "type": "file"
+    },
+    {
+      "path": "",
+      "accessCount": 1,
+      "lastAccessed": 1776545119782,
+      "type": "directory"
+    },
+    {
+      "path": "tests/test_utils.py",
+      "accessCount": 1,
+      "lastAccessed": 1776545381201,
+      "type": "file"
+    },
+    {
+      "path": "scripts/utils.py",
+      "accessCount": 1,
+      "lastAccessed": 1776545398332,
+      "type": "file"
+    },
+    {
+      "path": "scripts/fetch_market.py",
+      "accessCount": 1,
+      "lastAccessed": 1776545931353,
+      "type": "file"
+    },
+    {
+      "path": "tests/test_analyze.py",
+      "accessCount": 1,
+      "lastAccessed": 1776545973614,
+      "type": "file"
+    },
+    {
+      "path": "scripts/analyze.py",
+      "accessCount": 1,
+      "lastAccessed": 1776546097169,
+      "type": "file"
+    },
+    {
+      "path": "tests/test_review.py",
+      "accessCount": 1,
+      "lastAccessed": 1776546135813,
+      "type": "file"
+    },
+    {
+      "path": "scripts/review.py",
+      "accessCount": 1,
+      "lastAccessed": 1776546240054,
+      "type": "file"
+    },
+    {
+      "path": "scripts/brief.py",
+      "accessCount": 1,
+      "lastAccessed": 1776546269049,
+      "type": "file"
+    },
+    {
+      "path": "scripts/add.py",
+      "accessCount": 1,
+      "lastAccessed": 1776546288931,
+      "type": "file"
+    },
+    {
+      "path": "scripts/why.py",
+      "accessCount": 1,
+      "lastAccessed": 1776546312327,
+      "type": "file"
+    },
+    {
+      "path": "main.py",
+      "accessCount": 1,
+      "lastAccessed": 1776546324871,
+      "type": "file"
+    },
+    {
+      "path": "dashboard/app.py",
+      "accessCount": 1,
+      "lastAccessed": 1776546502124,
+      "type": "file"
+    },
+    {
+      "path": "go/internal/store/db_test.go",
+      "accessCount": 1,
+      "lastAccessed": 1776597243449,
+      "type": "file"
+    },
+    {
+      "path": "go/internal/store/trades_test.go",
+      "accessCount": 1,
+      "lastAccessed": 1776597319856,
+      "type": "file"
+    },
+    {
+      "path": "go/internal/store/trades.go",
+      "accessCount": 1,
+      "lastAccessed": 1776597330698,
+      "type": "file"
+    },
+    {
+      "path": "go/cmd/migrate/main.go",
+      "accessCount": 1,
+      "lastAccessed": 1776597365611,
+      "type": "file"
+    },
+    {
+      "path": "go/internal/market/fetcher_test.go",
+      "accessCount": 1,
+      "lastAccessed": 1776597411078,
+      "type": "file"
+    },
+    {
+      "path": "go/internal/market/fetcher.go",
+      "accessCount": 1,
+      "lastAccessed": 1776597423429,
+      "type": "file"
+    },
+    {
+      "path": "go/internal/market/indicators.go",
+      "accessCount": 1,
+      "lastAccessed": 1776597476727,
+      "type": "file"
+    },
+    {
+      "path": "go/internal/analysis/pattern_test.go",
+      "accessCount": 1,
+      "lastAccessed": 1776597534514,
+      "type": "file"
+    },
+    {
+      "path": "go/internal/analysis/pattern.go",
+      "accessCount": 1,
+      "lastAccessed": 1776597544597,
+      "type": "file"
+    },
+    {
+      "path": "go/internal/analysis/engine_test.go",
+      "accessCount": 1,
+      "lastAccessed": 1776597568425,
+      "type": "file"
+    },
+    {
+      "path": "go/internal/analysis/engine.go",
+      "accessCount": 1,
+      "lastAccessed": 1776597592702,
+      "type": "file"
+    }
+  ],
+  "userDirectives": []
+}

@@ -23,13 +23,13 @@ Stock-Ops는 나의 매매 습관을 아는 투자 파트너다.
 ## 슬래시 커맨드
 
 ```
-/stock-ops                        → 전체 명령어 목록 출력
-/stock-ops add                    → 새 매매 등록 (대화형 입력)
-/stock-ops analyze {id}           → 특정 매매 단건 분석
-/stock-ops review                 → 전체 매매 이력 패턴 분석
-/stock-ops brief                  → 보유 종목 오늘의 뉴스 브리핑
-/stock-ops dashboard              → 현재 보유 현황 + 수익률 출력
-/stock-ops why {id}               → 이 매매, 왜 했었는지 되짚기
+/annotate                        → 전체 명령어 목록 출력
+/annotate add                    → 새 매매 등록 (대화형 입력)
+/annotate analyze {id}           → 특정 매매 단건 분석
+/annotate review                 → 전체 매매 이력 패턴 분석
+/annotate brief                  → 보유 종목 오늘의 뉴스 브리핑
+/annotate dashboard              → 현재 보유 현황 + 수익률 출력
+/annotate why {id}               → 이 매매, 왜 했었는지 되짚기
 ```
 
 ---
@@ -122,7 +122,7 @@ stock-ops/
 │   ├── templates/         ← HTML 템플릿
 │   └── static/            ← HTMX + Chart.js
 └── data/
-    └── stock-ops.db       ← SQLite DB
+    └── annotate.db       ← SQLite DB
 ```
 
 ---

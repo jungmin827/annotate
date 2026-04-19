@@ -1,0 +1,12 @@
+{"t":0,"agent":"system","event":"skill_invoked","skill_name":"superpowers:writing-plans"}
+{"t":0,"agent":"ad88b6d","agent_type":"Explore","event":"agent_start","parent_mode":"none"}
+{"t":0,"agent":"ad88b6d","agent_type":"Explore","event":"agent_stop","success":true,"duration_ms":61076}
+{"t":0,"agent":"system","event":"skill_invoked","skill_name":"superpowers:executing-plans"}
+{"t":0,"agent":"ad408cf","agent_type":"unknown","event":"agent_stop","success":true}
+{"t":0,"agent":"a836679","agent_type":"unknown","event":"agent_stop","success":true}
+{"t":0,"agent":"system","event":"skill_invoked","skill_name":"superpowers:writing-plans"}
+{"t":0,"agent":"system","event":"skill_invoked","skill_name":"superpowers:executing-plans"}
+{"t":0,"agent":"aa628af","agent_type":"unknown","event":"agent_stop","success":true}
+{"t":0,"agent":"a076d5b","agent_type":"unknown","event":"agent_stop","success":true}
+{"t":0,"agent":"a74c677","agent_type":"unknown","event":"agent_stop","success":true}
+{"t":0,"agent":"a6d3ab4","agent_type":"unknown","event":"agent_stop","success":true}
