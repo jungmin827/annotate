@@ -115,6 +115,19 @@ tr:last-child td { border-bottom: none; }
     <div id="review-result"></div>
   </div>
 
+  <div class="section">
+    <h2>뉴스 브리핑</h2>
+    <button class="btn btn-secondary"
+      hx-post="/brief"
+      hx-target="#brief-result"
+      hx-swap="innerHTML"
+      hx-indicator="#brief-ind">
+      보유 종목 뉴스 브리핑
+    </button>
+    <span id="brief-ind" class="htmx-indicator"> 수집 중...</span>
+    <div id="brief-result"></div>
+  </div>
+
 </div>
 </body>
 </html>

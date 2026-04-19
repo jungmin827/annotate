@@ -2,6 +2,7 @@ package handler
 
 import (
 	"embed"
+	"fmt"
 	"html/template"
 	"net/http"
 	"strings"
@@ -9,6 +10,7 @@ import (
 
 	"annotate/internal/analysis"
 	"annotate/internal/market"
+	"annotate/internal/news"
 	"annotate/internal/store"
 )
 
@@ -19,6 +21,7 @@ type Handler struct {
 	db            *store.DB
 	apiKey        string
 	claudeBaseURL string
+	newsBaseURL   string
 	tmpl          *template.Template
 	mux           *http.ServeMux
 }
@@ -34,10 +37,12 @@ func New(db *store.DB, apiKey string) *Handler {
 	h.mux.HandleFunc("GET /trades", h.tradesList)
 	h.mux.HandleFunc("POST /analyze/{id}", h.analyze)
 	h.mux.HandleFunc("POST /review", h.review)
+	h.mux.HandleFunc("POST /brief", h.brief)
 	return h
 }
 
 func (h *Handler) SetClaudeBaseURL(url string) { h.claudeBaseURL = url }
+func (h *Handler) SetNewsBaseURL(url string)   { h.newsBaseURL = url }
 
 func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	h.mux.ServeHTTP(w, r)
@@ -127,6 +132,74 @@ func (h *Handler) review(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+type briefItem struct {
+	Name    string
+	Ticker  string
+	Summary string
+}
+
+func (h *Handler) brief(w http.ResponseWriter, r *http.Request) {
+	holdings, err := h.db.GetHoldingTrades()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	seen := map[string]bool{}
+	var briefs []briefItem
+	for _, t := range holdings {
+		if seen[t.Ticker] {
+			continue
+		}
+		seen[t.Ticker] = true
+
+		fetchedAt, _ := h.db.GetLatestNewsFetchedAt(t.Ticker)
+		if newsIsStale(fetchedAt) {
+			_ = news.FetchAndStore(t.Ticker, h.db, h.newsBaseURL)
+		}
+
+		items, _ := h.db.GetNewsForTicker(t.Ticker, 5)
+		summary := h.summarizeNews(t.Name, items)
+		briefs = append(briefs, briefItem{Name: t.Name, Ticker: t.Ticker, Summary: summary})
+	}
+
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	h.tmpl.ExecuteTemplate(w, "brief_result.html", map[string]any{
+		"Briefs": briefs,
+		"Date":   time.Now().Format("2006-01-02"),
+	})
+}
+
+func newsIsStale(fetchedAt string) bool {
+	if fetchedAt == "" {
+		return true
+	}
+	t, err := time.Parse("2006-01-02T15:04:05Z", fetchedAt)
+	if err != nil {
+		return true
+	}
+	return time.Since(t) > time.Hour
+}
+
+func (h *Handler) summarizeNews(name string, items []store.NewsItem) string {
+	if len(items) == 0 {
+		return "최근 뉴스를 찾을 수 없습니다."
+	}
+	var lines string
+	for _, item := range items {
+		lines += "- " + item.Title + "\n"
+	}
+	prompt := fmt.Sprintf(
+		"다음은 %s의 최근 뉴스 헤드라인입니다.\n투자 추천 없이, 사실 기반으로 3줄 이내로 요약하세요.\n\n%s\n형식:\n1. [핵심 내용 1]\n2. [핵심 내용 2]\n3. [핵심 내용 3]",
+		name, lines,
+	)
+	result, err := analysis.CallClaude(h.apiKey, prompt, h.claudeBaseURL)
+	if err != nil {
+		return "요약 실패: " + err.Error()
+	}
+	return result
+}
+
 func (h *Handler) fetchSummary(trade store.Trade) market.Summary {
 	t, err := time.Parse("2006-01-02", trade.Date)
 	if err != nil {
@@ -147,7 +220,6 @@ func (h *Handler) fetchSummary(trade store.Trade) market.Summary {
 	return summary
 }
 
-// newlineToBreak converts \n to <br> for HTML display.
 func newlineToBreak(s string) template.HTML {
 	escaped := template.HTMLEscapeString(s)
 	return template.HTML(strings.ReplaceAll(escaped, "\n", "<br>"))

@@ -1,6 +1,7 @@
 package handler_test
 
 import (
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"path/filepath"
@@ -129,5 +130,60 @@ func TestReview_HTMX(t *testing.T) {
 	}
 	if !strings.Contains(rec.Body.String(), "패턴") {
 		t.Error("review response missing pattern text")
+	}
+}
+
+func TestBrief_NoHoldings(t *testing.T) {
+	db := openTestDB(t)
+	h := handler.New(db, "")
+
+	req := httptest.NewRequest(http.MethodPost, "/brief", nil)
+	rec := httptest.NewRecorder()
+	h.ServeHTTP(rec, req)
+
+	if rec.Code != http.StatusOK {
+		t.Fatalf("status=%d want 200", rec.Code)
+	}
+	if !strings.Contains(rec.Body.String(), "보유 중인 종목이 없습니다") {
+		t.Error("expected empty holdings message")
+	}
+}
+
+func TestBrief_WithHolding(t *testing.T) {
+	claudeSrv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.Write([]byte(`{"content":[{"type":"text","text":"1. NVIDIA 실적 호조\n2. AI 수요 증가"}]}`))
+	}))
+	defer claudeSrv.Close()
+
+	newsSrv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		json.NewEncoder(w).Encode(map[string]any{
+			"news": []map[string]any{
+				{"uuid": "n1", "title": "NVIDIA Q1 Record", "link": "https://example.com", "publisher": "Reuters", "providerPublishTime": 1713456789},
+			},
+		})
+	}))
+	defer newsSrv.Close()
+
+	db := openTestDB(t)
+	seedTrade(t, db, store.Trade{
+		ID: "t2", Ticker: "NVDA", Name: "NVIDIA", Market: "NASDAQ",
+		Action: "buy", Price: 875.5, Quantity: 5,
+		Date: "2025-03-15", Reason: "AI 수혜주", Status: "holding",
+	})
+
+	h := handler.New(db, "test-key")
+	h.SetClaudeBaseURL(claudeSrv.URL)
+	h.SetNewsBaseURL(newsSrv.URL)
+
+	req := httptest.NewRequest(http.MethodPost, "/brief", nil)
+	rec := httptest.NewRecorder()
+	h.ServeHTTP(rec, req)
+
+	if rec.Code != http.StatusOK {
+		t.Fatalf("status=%d want 200", rec.Code)
+	}
+	if !strings.Contains(rec.Body.String(), "NVIDIA") {
+		t.Error("brief response missing ticker name")
 	}
 }

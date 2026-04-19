@@ -1,0 +1,14 @@
+<div style="margin-top:.75rem;padding:1rem;background:#fffbf0;border-radius:6px;border-left:3px solid #f39c12">
+  <div style="font-size:.75rem;color:#666;margin-bottom:.75rem">📰 보유 종목 뉴스 브리핑 — {{.Date}}</div>
+  {{if .Briefs}}
+    {{range .Briefs}}
+    <div style="margin-bottom:1.25rem">
+      <div style="font-size:.8rem;font-weight:600;color:#333;margin-bottom:.3rem">{{.Name}} ({{.Ticker}})</div>
+      <div style="font-size:.875rem;line-height:1.8;white-space:pre-wrap">{{.Summary}}</div>
+    </div>
+    {{end}}
+  {{else}}
+  <div style="color:#888;font-size:.875rem">보유 중인 종목이 없습니다.</div>
+  {{end}}
+  <div style="font-size:.7rem;color:#aaa;margin-top:.5rem">※ 이 브리핑은 투자 자문이 아닙니다.</div>
+</div>
