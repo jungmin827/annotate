@@ -7,8 +7,10 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"time"
 
 	"annotate/internal/handler"
+	"annotate/internal/scheduler"
 	"annotate/internal/store"
 )
 
@@ -31,6 +33,10 @@ func main() {
 	if apiKey == "" {
 		fmt.Fprintln(os.Stderr, "warning: ANTHROPIC_API_KEY not set; analysis endpoints will fail")
 	}
+
+	sched := scheduler.New(db, time.Hour, "")
+	sched.Start()
+	defer sched.Stop()
 
 	h := handler.New(db, apiKey)
 	addr := ":8080"
