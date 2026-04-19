@@ -29,4 +29,11 @@ func TestOpen_CreatesSchema(t *testing.T) {
 	if err != nil {
 		t.Fatalf("market_cache table not found: %v", err)
 	}
+
+	err = db.SQL.QueryRow(
+		"SELECT name FROM sqlite_master WHERE type='table' AND name='news'",
+	).Scan(&name)
+	if err != nil {
+		t.Fatalf("news table not found: %v", err)
+	}
 }

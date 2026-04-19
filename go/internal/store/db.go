@@ -60,6 +60,16 @@ CREATE TABLE IF NOT EXISTS market_cache (
 	volume  INTEGER,
 	UNIQUE(ticker, date)
 );
+
+CREATE TABLE IF NOT EXISTS news (
+	id           TEXT PRIMARY KEY,
+	ticker       TEXT NOT NULL,
+	title        TEXT NOT NULL,
+	link         TEXT NOT NULL,
+	publisher    TEXT,
+	published_at INTEGER,
+	fetched_at   TEXT NOT NULL
+);
 `
 	_, err := raw.Exec(schema)
 	return err
