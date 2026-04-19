@@ -1,0 +1,7 @@
+<div style="margin-top:.75rem;padding:1rem;background:#f0f4ff;border-radius:6px;border-left:3px solid #4a6fa5">
+  <div style="font-size:.75rem;color:#666;margin-bottom:.5rem">
+    📌 {{.Trade.Name}} ({{.Trade.Ticker}}) — {{.Trade.Date}} {{.Trade.Action}} @ {{printf "%.0f" .Trade.Price}}
+  </div>
+  <div style="font-size:.875rem;line-height:1.8;white-space:pre-wrap">{{.Result}}</div>
+  <div style="font-size:.7rem;color:#aaa;margin-top:.5rem">※ 이 분석은 투자 자문이 아닙니다. 과거 데이터 기반 참고용입니다.</div>
+</div>
