@@ -38,74 +38,74 @@ Python + yfinance + pandas-ta + anthropic + streamlit
 
 ---
 
-## Phase 2 — Go 서버 전환
+## Phase 2 — Go 서버 전환 ✅ 완료
 
 **목표**: Python 스크립트를 Go HTTP 서버로 전환한다. 항상 켜져 있는 대시보드.
 
 ### 스택
 ```
-Go + HTMX + Chart.js
+Go + HTMX + SQLite (modernc.org/sqlite)
 ```
 
-### 구현 항목
+### 구현 내용 (커밋: 23b08a4)
 
-- [ ] `cmd/server/main.go` — HTTP 서버 진입점
-- [ ] `internal/market/fetcher.go` — 주가 API 클라이언트
-- [ ] `internal/market/indicators.go` — RSI, MACD 등 Go 구현
-- [ ] `internal/analysis/engine.go` — Claude API 호출 레이어
-- [ ] `web/templates/` — 대시보드 HTML 템플릿
-- [ ] `web/static/` — HTMX + Chart.js
+- [x] `go/internal/store/db.go` — SQLite DB 오픈 + 스키마 적용 (`trades`, `market_cache` 테이블)
+- [x] `go/internal/store/trades.go` — Trade CRUD (`InsertTrade`, `GetTradeByID`, `GetAllTrades`, `GetHoldingTrades`)
+- [x] `go/internal/market/fetcher.go` — Yahoo Finance OHLCV 수집 (baseURL 주입으로 테스트 격리)
+- [x] `go/internal/market/indicators.go` — RSI14, EMA, 거래량 비율 계산 + `SummarizeOnDate`
+- [x] `go/internal/analysis/engine.go` — Claude API 호출 (`CallClaude`), `BuildAnalysisPrompt`, `BuildReviewPrompt`
+- [x] `go/internal/analysis/pattern.go` — `ComputeStats` (종목별 PnL%, 보유일수 집계)
+- [x] `go/internal/handler/handler.go` — HTTP 핸들러: `GET /`, `GET /trades`, `POST /analyze/{id}`, `POST /review`
+- [x] `go/internal/handler/templates/` — HTMX 대시보드 (`dashboard.html`, `trades.html`, `analyze_result.html`, `review_result.html`)
+- [x] `go/cmd/server/main.go` — 서버 진입점 (포트 8080)
 
-### 완료 기준
-브라우저에서 대시보드 접근 가능.
-매매 등록 → 분석 리포트 생성까지 웹 UI에서 완결.
+### 실제 완료 기준
+- 전체 테스트 12개 PASS
+- 브라우저에서 대시보드 접근, 매매 분석(HTMX) 동작 확인
 
 ---
 
-## Phase 3 — 자동화 + DB 마이그레이션
+## Phase 3 — 뉴스 크롤러 + 백그라운드 스케줄러 ✅ 완료
 
-**목표**: 수동으로 명령어를 치지 않아도 데이터가 쌓인다.
+**목표**: 보유 종목 뉴스를 자동 수집하고 Claude로 3줄 요약해서 대시보드에 표시한다.
 
-### 구현 항목
+### 구현 내용 (커밋: 6a0a854 ~ b578f4b)
 
-- [ ] `internal/scheduler/jobs.go` — 백그라운드 스케줄러
-  - 장 마감 후 보유 종목 주가 자동 수집 (16:00 KST)
-  - 매일 오전 뉴스 브리핑 자동 생성 (08:30 KST)
-  - 주 1회 패턴 리뷰 자동 생성 (일요일 저녁)
-- [ ] `internal/store/trades.go` — JSON → SQLite 마이그레이션
-- [ ] 분석 파이프라인에 패턴 컨텍스트 주입
-  - 단건 분석 시 "이 사람의 기존 패턴" 요약을 Claude에게 함께 전달
+- [x] `go/internal/store/db.go` — `news` 테이블 스키마 추가
+  ```sql
+  CREATE TABLE IF NOT EXISTS news (
+      id TEXT PRIMARY KEY, ticker TEXT NOT NULL,
+      title TEXT NOT NULL, link TEXT NOT NULL,
+      publisher TEXT, published_at INTEGER, fetched_at TEXT NOT NULL
+  );
+  ```
+- [x] `go/internal/store/news.go` — News CRUD
+  - `InsertNewsItem` (INSERT OR IGNORE — 중복 무시)
+  - `GetNewsForTicker(ticker, limit)` — published_at DESC 정렬
+  - `GetLatestNewsFetchedAt(ticker)` — 마지막 수집 시각 조회
+- [x] `go/internal/news/crawler.go` — Yahoo Finance 뉴스 수집
+  - `Fetch(ticker, baseURL, maxCount)` — `/v1/finance/search` 호출, baseURL 주입으로 테스트 격리
+  - `FetchAndStore(ticker, db, baseURL)` — 수집 후 DB 저장
+- [x] `go/internal/scheduler/jobs.go` — 백그라운드 스케줄러
+  - `New(db, interval, newsBaseURL)` + `Start()` / `Stop()`
+  - 서버 시작 시 즉시 1회 수집, 이후 설정 간격(기본 1시간)으로 반복
+  - 보유 종목(`status=holding`) 티커 중복 없이 순회
+- [x] `go/internal/handler/handler.go` — `POST /brief` 엔드포인트 추가
+  - `SetNewsBaseURL(url)` — 테스트용 URL 주입
+  - 1시간 이상 된 캐시는 즉시 갱신 후 Claude로 3줄 요약
+- [x] `go/internal/handler/templates/brief_result.html` — HTMX 뉴스 브리핑 프래그먼트
+- [x] `go/internal/handler/templates/dashboard.html` — "뉴스 브리핑" 섹션 추가 (`hx-post="/brief"`)
+- [x] `go/cmd/server/main.go` — 스케줄러 시작/종료 연동
 
-### 완료 기준
-아침에 대시보드를 열면 어제 데이터와 오늘 뉴스가 자동으로 준비되어 있다.
+### 실제 완료 기준
+- 전체 테스트 PASS (store 9개, news 4개, handler 7개, scheduler 2개)
+- 전체 빌드 성공 (`go build ./...`)
+- 대시보드 "보유 종목 뉴스 브리핑" 버튼 → HTMX로 Claude 요약 로드
 
-### SQLite 스키마 (예상)
-```sql
-CREATE TABLE trades (
-    id TEXT PRIMARY KEY,
-    ticker TEXT,
-    name TEXT,
-    market TEXT,
-    action TEXT,
-    price REAL,
-    quantity INTEGER,
-    date TEXT,
-    reason TEXT,
-    status TEXT,
-    rsi_at_trade REAL,
-    pct_change_at_trade REAL,
-    volume_ratio_at_trade REAL,
-    linked_id TEXT
-);
-
-CREATE TABLE market_cache (
-    ticker TEXT,
-    date TEXT,
-    open REAL, high REAL, low REAL, close REAL, volume INTEGER,
-    rsi REAL, macd REAL,
-    PRIMARY KEY (ticker, date)
-);
-```
+### 미구현 (Phase 4로 이월)
+- 주가 자동 수집 스케줄러 (장 마감 후 16:00 KST)
+- 패턴 컨텍스트 주입 (단건 분석 시 기존 패턴 요약 전달)
+- 주 1회 패턴 리뷰 자동 생성
 
 ---
 
